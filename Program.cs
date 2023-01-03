@@ -1,4 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Vehicles.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<VehicleModelContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("VehicleModelContext") ?? throw new InvalidOperationException("Connection string 'VehicleModelContext' not found.")));
+builder.Services.AddDbContext<VehicleMakeContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("VehicleMakeContext") ?? throw new InvalidOperationException("Connection string 'VehicleMakeContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
