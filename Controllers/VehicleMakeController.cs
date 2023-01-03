@@ -12,9 +12,9 @@ namespace Vehicles.Controllers
 {
     public class VehicleMakeController : Controller
     {
-        private readonly VehicleMakeContext _context;
+        private readonly VehicleContext _context;
 
-        public VehicleMakeController(VehicleMakeContext context)
+        public VehicleMakeController(VehicleContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace Vehicles.Controllers
         {
               return _context.VehicleMake != null ? 
                           View(await _context.VehicleMake.ToListAsync()) :
-                          Problem("Entity set 'VehicleMakeContext.VehicleMake'  is null.");
+                          Problem("Entity set 'VehicleContext.VehicleMake'  is null.");
         }
 
         // GET: VehicleMake/Details/5
@@ -143,7 +143,7 @@ namespace Vehicles.Controllers
         {
             if (_context.VehicleMake == null)
             {
-                return Problem("Entity set 'VehicleMakeContext.VehicleMake'  is null.");
+                return Problem("Entity set 'VehicleContext.VehicleMake'  is null.");
             }
             var vehicleMake = await _context.VehicleMake.FindAsync(id);
             if (vehicleMake != null)

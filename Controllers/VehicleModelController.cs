@@ -12,9 +12,9 @@ namespace Vehicles.Controllers
 {
     public class VehicleModelController : Controller
     {
-        private readonly VehicleModelContext _context;
+        private readonly VehicleContext _context;
 
-        public VehicleModelController(VehicleModelContext context)
+        public VehicleModelController(VehicleContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace Vehicles.Controllers
         {
               return _context.VehicleModel != null ? 
                           View(await _context.VehicleModel.ToListAsync()) :
-                          Problem("Entity set 'VehicleModelContext.VehicleModel'  is null.");
+                          Problem("Entity set 'VehicleContext.VehicleModel'  is null.");
         }
 
         // GET: VehicleModel/Details/5
@@ -143,7 +143,7 @@ namespace Vehicles.Controllers
         {
             if (_context.VehicleModel == null)
             {
-                return Problem("Entity set 'VehicleModelContext.VehicleModel'  is null.");
+                return Problem("Entity set 'VehicleContext.VehicleModel'  is null.");
             }
             var vehicleModel = await _context.VehicleModel.FindAsync(id);
             if (vehicleModel != null)

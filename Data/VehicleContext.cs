@@ -7,13 +7,15 @@ using Vehicles.Models;
 
 namespace Vehicles.Data
 {
-    public class VehicleMakeContext : DbContext
+    public class VehicleContext : DbContext
     {
-        public VehicleMakeContext (DbContextOptions<VehicleMakeContext> options)
+        public VehicleContext (DbContextOptions<VehicleContext> options)
             : base(options)
         {
         }
 
         public DbSet<Vehicles.Models.VehicleMake> VehicleMake { get; set; } = default!;
+
+        public DbSet<Vehicles.Models.VehicleModel> VehicleModel { get; set; } = default!;
     }
 }
