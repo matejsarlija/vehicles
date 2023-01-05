@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\VehicleModel\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Views\VehicleModel\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Views\VehicleModel\Details.cshtml" />

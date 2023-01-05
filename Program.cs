@@ -22,6 +22,17 @@ else
     app.UseDeveloperExceptionPage();
 }
 
+
+// delete later on
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<VehicleContext>();
+    SeedData.Initialize(services);
+    context.Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
