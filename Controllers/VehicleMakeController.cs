@@ -36,7 +36,7 @@ namespace Vehicles.Controllers
             }
 
             var vehicleMake = await _context.VehicleMake
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicleMake == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
         {
-            if (id != vehicleMake.ID)
+            if (id != vehicleMake.Id)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace Vehicles.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleMakeExists(vehicleMake.ID))
+                    if (!VehicleMakeExists(vehicleMake.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace Vehicles.Controllers
             }
 
             var vehicleMake = await _context.VehicleMake
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicleMake == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace Vehicles.Controllers
 
         private bool VehicleMakeExists(int id)
         {
-          return (_context.VehicleMake?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

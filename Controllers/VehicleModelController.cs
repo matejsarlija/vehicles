@@ -36,7 +36,7 @@ namespace Vehicles.Controllers
 
             var vehicleModel = await _context.VehicleModel
                 .Include(v => v.VehicleMake)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -48,7 +48,7 @@ namespace Vehicles.Controllers
         // GET: VehicleModel/Create
         public IActionResult Create()
         {
-            ViewData["VehicleMakeID"] = new SelectList(_context.VehicleMake, "ID", "ID");
+            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Id");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,VehicleMakeID,Name,Abrv")] VehicleModel vehicleModel)
+        public async Task<IActionResult> Create([Bind("Id,VehicleMakeId,Name,Abrv")] VehicleModel vehicleModel)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Vehicles.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleMakeID"] = new SelectList(_context.VehicleMake, "ID", "ID", vehicleModel.VehicleMakeID);
+            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Id", vehicleModel.VehicleMakeId);
             return View(vehicleModel);
         }
 
@@ -82,7 +82,7 @@ namespace Vehicles.Controllers
             {
                 return NotFound();
             }
-            ViewData["VehicleMakeID"] = new SelectList(_context.VehicleMake, "ID", "ID", vehicleModel.VehicleMakeID);
+            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Id", vehicleModel.VehicleMakeId);
             return View(vehicleModel);
         }
 
@@ -91,9 +91,9 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,VehicleMakeID,Name,Abrv")] VehicleModel vehicleModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleMakeId,Name,Abrv")] VehicleModel vehicleModel)
         {
-            if (id != vehicleModel.ID)
+            if (id != vehicleModel.Id)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace Vehicles.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleModelExists(vehicleModel.ID))
+                    if (!VehicleModelExists(vehicleModel.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +118,7 @@ namespace Vehicles.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleMakeID"] = new SelectList(_context.VehicleMake, "ID", "ID", vehicleModel.VehicleMakeID);
+            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Id", vehicleModel.VehicleMakeId);
             return View(vehicleModel);
         }
 
@@ -132,7 +132,7 @@ namespace Vehicles.Controllers
 
             var vehicleModel = await _context.VehicleModel
                 .Include(v => v.VehicleMake)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -162,7 +162,7 @@ namespace Vehicles.Controllers
 
         private bool VehicleModelExists(int id)
         {
-          return (_context.VehicleModel?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.VehicleModel?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

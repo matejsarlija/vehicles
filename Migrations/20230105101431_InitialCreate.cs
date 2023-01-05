@@ -14,41 +14,41 @@ namespace Vehicles.Migrations
                 name: "VehicleMake",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Abrv = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleMake", x => x.ID);
+                    table.PrimaryKey("PK_VehicleMake", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "VehicleModel",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    VehicleMakeId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Abrv = table.Column<string>(type: "TEXT", nullable: false),
-                    VehicleMakeID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Abrv = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleModel", x => x.ID);
+                    table.PrimaryKey("PK_VehicleModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VehicleModel_VehicleMake_VehicleMakeID",
-                        column: x => x.VehicleMakeID,
+                        name: "FK_VehicleModel_VehicleMake_VehicleMakeId",
+                        column: x => x.VehicleMakeId,
                         principalTable: "VehicleMake",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_VehicleModel_VehicleMakeID",
+                name: "IX_VehicleModel_VehicleMakeId",
                 table: "VehicleModel",
-                column: "VehicleMakeID");
+                column: "VehicleMakeId");
         }
 
         /// <inheritdoc />

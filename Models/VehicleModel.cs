@@ -2,8 +2,8 @@ namespace Vehicles.Models;
 
 public class VehicleModel
 {
-     public int ID { get; set; }
-     public int VehicleMakeID { get; set; }
+     public int Id { get; set; }
+     public int VehicleMakeId { get; set; }
      public string Name { get; set; }
      public string Abrv { get; set; }
 
