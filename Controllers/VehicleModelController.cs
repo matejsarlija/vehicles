@@ -20,15 +20,25 @@ namespace Vehicles.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string vehicleModelMake)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             //ViewData["AbrvSortParm"] = String.IsNullOrEmpty(sortOrder) ? "abrv_desc" : "abrv";
             //ViewData["MakeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "make";
             ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
             ViewData["MakeSortParm"] = sortOrder == "make" ? "make_desc" : "make";
+            
+            // section for filter by make
+            IQueryable<string> vehicleMakeQuery = from v in _context.VehicleModel.Include(v => v.VehicleMake)
+                orderby v.VehicleMake
+                select v.VehicleMake.Name;
 
             var vehicleModels = from v in _context.VehicleModel.Include(v => v.VehicleMake) select v;
+
+            if (!string.IsNullOrEmpty(vehicleModelMake))
+            {
+                vehicleModels = vehicleModels.Where(v => v.VehicleMake.Name == vehicleModelMake);
+            }
 
             switch (sortOrder)
             {
@@ -51,9 +61,16 @@ namespace Vehicles.Controllers
                     vehicleModels = vehicleModels.OrderBy(v => v.Name);
                     break;
             }
+
+            var vehicleModelVM = new VehicleModelViewModel
+            {
+                VehicleMakes = new SelectList(await vehicleMakeQuery.Distinct().ToListAsync()),
+                VehicleModels = await vehicleModels.ToListAsync()
+            };
             
             //var vehicleContext = _context.VehicleModel.Include(v => v.VehicleMake);
-            return View(await vehicleModels.AsNoTracking().ToListAsync());
+            //return View(await vehicleModels.AsNoTracking().ToListAsync());
+            return View(vehicleModelVM);
         }
 
         // GET: VehicleModel/Details/5

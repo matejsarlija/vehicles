@@ -1,4 +1,4 @@
-@model IEnumerable<Vehicles.Models.VehicleModel>
+@model VehicleModelViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,23 +9,33 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-controller="VehicleModel" asp-action="Index" method="get">
+    <p>
+        <select asp-for="VehicleModelMake" asp-items="Model.VehicleMakes">
+            <option value="">All</option>
+        </select>
+        Make: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.VehicleModels[0].Name)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AbrvSortParm"]">@Html.DisplayNameFor(model => model.Abrv)</a> 
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AbrvSortParm"]">@Html.DisplayNameFor(model => model.VehicleModels[0].Abrv)</a> 
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["MakeSortParm"]">@Html.DisplayNameFor(model => model.VehicleMake)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["MakeSortParm"]">@Html.DisplayNameFor(model => model.VehicleModels[0].VehicleMake)</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.VehicleModels) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
