@@ -20,10 +20,40 @@ namespace Vehicles.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var vehicleContext = _context.VehicleModel.Include(v => v.VehicleMake);
-            return View(await vehicleContext.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            //ViewData["AbrvSortParm"] = String.IsNullOrEmpty(sortOrder) ? "abrv_desc" : "abrv";
+            //ViewData["MakeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "make";
+            ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+            ViewData["MakeSortParm"] = sortOrder == "make" ? "make_desc" : "make";
+
+            var vehicleModels = from v in _context.VehicleModel.Include(v => v.VehicleMake) select v;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    vehicleModels = vehicleModels.OrderByDescending(v => v.Name);
+                    break;
+                case "abrv":
+                    vehicleModels = vehicleModels.OrderBy(v => v.Abrv);
+                    break;
+                case "abrv_desc":
+                    vehicleModels = vehicleModels.OrderByDescending(v => v.Abrv);
+                    break;
+                case "make":
+                    vehicleModels = vehicleModels.OrderBy(v => v.VehicleMake.Name);
+                    break;
+                case "make_desc":
+                    vehicleModels = vehicleModels.OrderByDescending(v => v.VehicleMake.Name);
+                    break;
+                default:
+                    vehicleModels = vehicleModels.OrderBy(v => v.Name);
+                    break;
+            }
+            
+            //var vehicleContext = _context.VehicleModel.Include(v => v.VehicleMake);
+            return View(await vehicleModels.AsNoTracking().ToListAsync());
         }
 
         // GET: VehicleModel/Details/5
