@@ -20,13 +20,25 @@ namespace Vehicles.Controllers
         }
 
         // GET: VehicleModel
-        public async Task<IActionResult> Index(string sortOrder, string vehicleModelMake)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string vehicleModelMake, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             //ViewData["AbrvSortParm"] = String.IsNullOrEmpty(sortOrder) ? "abrv_desc" : "abrv";
             //ViewData["MakeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "make";
             ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
             ViewData["MakeSortParm"] = sortOrder == "make" ? "make_desc" : "make";
+
+            if (vehicleModelMake != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                vehicleModelMake = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = vehicleModelMake; 
             
             // section for filter by make
             IQueryable<string> vehicleMakeQuery = from v in _context.VehicleModel.Include(v => v.VehicleMake)
@@ -62,11 +74,20 @@ namespace Vehicles.Controllers
                     break;
             }
 
+            IQueryable<VehicleModel> source = vehicleModels;
+            int pageSize = 3;
+            var paginatedList = await
+                PaginatedList<VehicleModel>.CreateAsync(source, pageNumber ?? 1, pageSize);
+
+
             var vehicleModelVM = new VehicleModelViewModel
             {
                 VehicleMakes = new SelectList(await vehicleMakeQuery.Distinct().ToListAsync()),
-                VehicleModels = await vehicleModels.ToListAsync()
+                VehicleModels = paginatedList,
+                VehicleModelMake = vehicleModelMake,
+                SearchString = currentFilter
             };
+
             
             //var vehicleContext = _context.VehicleModel.Include(v => v.VehicleMake);
             //return View(await vehicleModels.AsNoTracking().ToListAsync());
