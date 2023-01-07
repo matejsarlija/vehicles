@@ -116,7 +116,7 @@ namespace Vehicles.Controllers
         // GET: VehicleModel/Create
         public IActionResult Create()
         {
-            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Id");
+            ViewData["VehicleMakeId"] = new SelectList(_context.VehicleMake, "Id", "Name");
             return View();
         }
 

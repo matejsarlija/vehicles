@@ -64,7 +64,7 @@
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.VehicleModels.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @prevDisabled">
+   class="btn btn-primary btn-default @prevDisabled">
     Previous
 </a>
 Page @(Model.VehicleModels.PageIndex) of @Model.VehicleModels.TotalPages
@@ -72,6 +72,6 @@ Page @(Model.VehicleModels.PageIndex) of @Model.VehicleModels.TotalPages
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.VehicleModels.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-primary btn-default @nextDisabled">
     Next
 </a>
