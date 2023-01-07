@@ -36,6 +36,7 @@ namespace Vehicles.Controllers
             }
 
             var vehicleMake = await _context.VehicleMake
+                .Include(v => v.VehicleModels)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicleMake == null)
             {

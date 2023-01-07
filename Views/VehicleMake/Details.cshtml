@@ -23,6 +23,31 @@
             @Html.DisplayFor(model => model.Abrv)
         </dd>
     </dl>
+    <hr/>
+    
+    
+    @{
+        var modelsTableVisible = Model.VehicleModels.Count > 0;
+    }
+    <table class="table" is-visible="modelsTableVisible">
+        <thead>
+        <tr>
+            <th>
+                Models
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.VehicleModels) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <p is-visible="!modelsTableVisible">This make has no models.</p>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
