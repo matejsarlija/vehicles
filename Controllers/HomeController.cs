@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Vehicles.Data;
 using Vehicles.Models;
 
 namespace Vehicles.Controllers;
@@ -7,15 +9,26 @@ namespace Vehicles.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly VehicleContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, VehicleContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+
+        int totalVehicleMakes = _context.VehicleMake.Count();
+        int totalVehicleModels = _context.VehicleModel.Count();
+
+        var totalVm = new SumViewModel
+        {
+            VehicleMakesSum = totalVehicleMakes,
+            VehicleModelsSum = totalVehicleModels
+        };
+        return View(totalVm);
     }
 
     public IActionResult Privacy()
