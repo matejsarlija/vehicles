@@ -20,11 +20,33 @@ namespace Vehicles.Controllers
         }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-              return _context.VehicleMake != null ? 
-                          View(await _context.VehicleMake.ToListAsync()) :
-                          Problem("Entity set 'VehicleContext.VehicleMake'  is null.");
+            
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+
+            var vehicleMakes = from v in _context.VehicleMake select v;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    vehicleMakes = vehicleMakes.OrderByDescending(v => v.Name);
+                    break;
+                case "abrv":
+                    vehicleMakes = vehicleMakes.OrderBy(v => v.Abrv);
+                    break;
+                case "abrv_desc":
+                    vehicleMakes = vehicleMakes.OrderByDescending(v => v.Abrv);
+                    break;
+                default:
+                    vehicleMakes = vehicleMakes.OrderBy(v => v.Name);
+                    break;
+
+            }
+            
+
+              return View(await vehicleMakes.AsNoTracking().ToListAsync());
         }
 
         // GET: VehicleMake/Details/5
