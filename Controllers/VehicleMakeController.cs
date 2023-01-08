@@ -20,13 +20,30 @@ namespace Vehicles.Controllers
         }
 
         // GET: VehicleMake
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
 
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
             var vehicleMakes = from v in _context.VehicleMake select v;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                vehicleMakes = vehicleMakes.Where(v => v.Name.Contains(searchString) ||
+                                                       v.Abrv.Contains(searchString));
+            }
 
             switch (sortOrder)
             {
@@ -44,9 +61,11 @@ namespace Vehicles.Controllers
                     break;
 
             }
+
+            int pageSize = 3;
             
 
-              return View(await vehicleMakes.AsNoTracking().ToListAsync());
+            return View(await PaginatedList<VehicleMake>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: VehicleMake/Details/5
