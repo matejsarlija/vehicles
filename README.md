@@ -1,7 +1,7 @@
 ## Vehicles App
 
 This is an asp.net app made for a job application, consisting almost solely
-from tips out of official Microsoft tutorial docs for asp.net, one from MVC/Razor part and one from "Data Access" part.
+from tips out of official Microsoft tutorial docs for asp.net, one for MVC/Razor part and one for "Data Access" part.
 
 1.**[MVC/Razor](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/start-mvc?view=aspnetcore-7.0&tabs=visual-studio)**
 
