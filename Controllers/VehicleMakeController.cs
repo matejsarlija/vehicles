@@ -59,11 +59,9 @@ namespace Vehicles.Controllers
                 default:
                     vehicleMakes = vehicleMakes.OrderBy(v => v.Name);
                     break;
-
             }
 
             int pageSize = 3;
-            
 
             return View(await PaginatedList<VehicleMake>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

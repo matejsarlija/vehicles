@@ -24,8 +24,6 @@ namespace Vehicles.Controllers
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            //ViewData["AbrvSortParm"] = String.IsNullOrEmpty(sortOrder) ? "abrv_desc" : "abrv";
-            //ViewData["MakeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "make_desc" : "make";
             ViewData["AbrvSortParm"] = sortOrder == "abrv" ? "abrv_desc" : "abrv";
             ViewData["MakeSortParm"] = sortOrder == "make" ? "make_desc" : "make";
 
@@ -87,10 +85,7 @@ namespace Vehicles.Controllers
                 VehicleModelMake = vehicleModelMake,
                 SearchString = currentFilter
             };
-
             
-            //var vehicleContext = _context.VehicleModel.Include(v => v.VehicleMake);
-            //return View(await vehicleModels.AsNoTracking().ToListAsync());
             return View(vehicleModelVM);
         }
 
