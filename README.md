@@ -12,7 +12,7 @@ the search and paging for your app, while data acccess related tutorial can help
 
 To make paging work with a filter on your database / entity model you will "have to" fit it to an adequate view model, depending on your use case, this will provide an example.
 
-One thing I would also like to do futher down the line is provide a refactor to Repository pattern, or maybe even CQRS, but I am new to the enterprise architecture patterns and for the moment I am having slight trouble with it :).
+One thing I would also like to do futher down the line is provide a refactor to Repository pattern, but I am new to the enterprise architecture patterns and for the moment I am having slight trouble with it :).
 
 Older tutorials had a sample for that as well, but it's warned against, my guess is it was harder to pull off with newer EF syntax, which is a comment you'll also find in other articles on the internet. And also not to clutter beginner resources.
 
