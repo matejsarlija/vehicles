@@ -16,7 +16,7 @@ namespace Vehicles.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
 
-            modelBuilder.Entity("Vehicles.Models.VehicleMake", b =>
+            modelBuilder.Entity("Vehicles.Service.Models.VehicleMake", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,7 @@ namespace Vehicles.Migrations
                     b.ToTable("VehicleMake");
                 });
 
-            modelBuilder.Entity("Vehicles.Models.VehicleModel", b =>
+            modelBuilder.Entity("Vehicles.Service.Models.VehicleModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,9 +59,9 @@ namespace Vehicles.Migrations
                     b.ToTable("VehicleModel");
                 });
 
-            modelBuilder.Entity("Vehicles.Models.VehicleModel", b =>
+            modelBuilder.Entity("Vehicles.Service.Models.VehicleModel", b =>
                 {
-                    b.HasOne("Vehicles.Models.VehicleMake", "VehicleMake")
+                    b.HasOne("Vehicles.Service.Models.VehicleMake", "VehicleMake")
                         .WithMany("VehicleModels")
                         .HasForeignKey("VehicleMakeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -70,7 +70,7 @@ namespace Vehicles.Migrations
                     b.Navigation("VehicleMake");
                 });
 
-            modelBuilder.Entity("Vehicles.Models.VehicleMake", b =>
+            modelBuilder.Entity("Vehicles.Service.Models.VehicleMake", b =>
                 {
                     b.Navigation("VehicleModels");
                 });
