@@ -61,7 +61,8 @@ public class VehicleMakeRepository : IVehicleMakeRepository
 
     public async Task CreateVehicleMakeAsync(VehicleMake vehicleMake)
     {
-        throw new NotImplementedException();
+        _context.VehicleMake.Add(vehicleMake);
+        await _context.SaveChangesAsync();
     }
 
     public async Task UpdateVehicleMakeAsync(VehicleMake vehicleMake)

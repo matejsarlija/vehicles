@@ -78,8 +78,7 @@ namespace Vehicles.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vehicleMake);
-                await _context.SaveChangesAsync();
+                await _vehicleMakeRepository.CreateVehicleMakeAsync(vehicleMake);
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicleMake);
