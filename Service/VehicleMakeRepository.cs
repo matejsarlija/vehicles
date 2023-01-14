@@ -73,7 +73,12 @@ public class VehicleMakeRepository : IVehicleMakeRepository
 
     public async Task DeleteVehicleMakeAsync(int id)
     {
-        throw new NotImplementedException();
+        var vehicleMake = await _context.VehicleMake.FindAsync(id);
+        if (vehicleMake != null)
+        {
+            _context.VehicleMake.Remove(vehicleMake);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task<bool> VehicleMakeExistsAsync(int id)

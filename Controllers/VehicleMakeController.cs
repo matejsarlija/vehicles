@@ -137,13 +137,8 @@ namespace Vehicles.Controllers
         // GET: VehicleMake/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.VehicleMake == null)
-            {
-                return NotFound();
-            }
 
-            var vehicleMake = await _context.VehicleMake
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vehicleMake = await _vehicleMakeRepository.GetVehicleMakeByIdAsync(id.Value);
             if (vehicleMake == null)
             {
                 return NotFound();
@@ -157,23 +152,15 @@ namespace Vehicles.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.VehicleMake == null)
-            {
-                return Problem("Entity set 'VehicleContext.VehicleMake'  is null.");
-            }
-            var vehicleMake = await _context.VehicleMake.FindAsync(id);
-            if (vehicleMake != null)
-            {
-                _context.VehicleMake.Remove(vehicleMake);
-            }
-            
-            await _context.SaveChangesAsync();
+            await _vehicleMakeRepository.DeleteVehicleMakeAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
-        private bool VehicleMakeExists(int id)
-        {
-          return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        
+        
+        // marked for deletion
+        //private bool VehicleMakeExists(int id)
+        //{
+        //  return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
+        //}
     }
 }
