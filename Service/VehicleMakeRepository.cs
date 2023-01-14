@@ -55,7 +55,8 @@ public class VehicleMakeRepository : IVehicleMakeRepository
 
     public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.VehicleMake.Include(v => v.VehicleModels)
+            .FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public async Task CreateVehicleMakeAsync(VehicleMake vehicleMake)

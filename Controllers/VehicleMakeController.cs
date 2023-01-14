@@ -49,14 +49,12 @@ namespace Vehicles.Controllers
         // GET: VehicleMake/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.VehicleMake == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var vehicleMake = await _context.VehicleMake
-                .Include(v => v.VehicleModels)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vehicleMake = await _vehicleMakeRepository.GetVehicleMakeByIdAsync(id.Value);
             if (vehicleMake == null)
             {
                 return NotFound();
