@@ -9,4 +9,5 @@ public interface IVehicleMakeRepository
     Task CreateVehicleMakeAsync(VehicleMake vehicleMake);
     Task UpdateVehicleMakeAsync(VehicleMake vehicleMake);
     Task DeleteVehicleMakeAsync(int id);
+    Task<bool> VehicleMakeExistsAsync(int id);
 }

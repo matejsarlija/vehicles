@@ -87,12 +87,12 @@ namespace Vehicles.Controllers
         // GET: VehicleMake/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.VehicleMake == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var vehicleMake = await _context.VehicleMake.FindAsync(id);
+            var vehicleMake = await _vehicleMakeRepository.GetVehicleMakeByIdAsync(id.Value);
             if (vehicleMake == null)
             {
                 return NotFound();
@@ -116,12 +116,11 @@ namespace Vehicles.Controllers
             {
                 try
                 {
-                    _context.Update(vehicleMake);
-                    await _context.SaveChangesAsync();
+                    await _vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleMakeExists(vehicleMake.Id))
+                    if (! await _vehicleMakeRepository.VehicleMakeExistsAsync(vehicleMake.Id))
                     {
                         return NotFound();
                     }

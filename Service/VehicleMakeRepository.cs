@@ -67,11 +67,17 @@ public class VehicleMakeRepository : IVehicleMakeRepository
 
     public async Task UpdateVehicleMakeAsync(VehicleMake vehicleMake)
     {
-        throw new NotImplementedException();
+        _context.VehicleMake.Update(vehicleMake);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteVehicleMakeAsync(int id)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> VehicleMakeExistsAsync(int id)
+    {
+        return await _context.VehicleMake.AnyAsync(v => v.Id == id);
     }
 }
