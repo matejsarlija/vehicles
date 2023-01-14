@@ -65,20 +65,23 @@ public class VehicleMakeRepository : IVehicleMakeRepository
             pageSize);
     }
 
-    public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)
+    public async Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int id)
     {
-        return await _context.VehicleMake.Include(v => v.VehicleModels)
+        var vehicleMake = await _context.VehicleMake.Include(v => v.VehicleModels)
             .FirstOrDefaultAsync(m => m.Id == id);
+        return _mapper.Map<VehicleMakeViewModel>(vehicleMake);
     }
 
-    public async Task CreateVehicleMakeAsync(VehicleMake vehicleMake)
+    public async Task CreateVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
     {
+        var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
         _context.VehicleMake.Add(vehicleMake);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateVehicleMakeAsync(VehicleMake vehicleMake)
+    public async Task UpdateVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
     {
+        var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
         _context.VehicleMake.Update(vehicleMake);
         await _context.SaveChangesAsync();
     }

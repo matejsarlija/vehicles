@@ -5,9 +5,9 @@ namespace Vehicles.Service;
 public interface IVehicleMakeRepository
 {
     Task<PaginatedList<VehicleMakeViewModel>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber);
-    Task<VehicleMake> GetVehicleMakeByIdAsync(int id);
-    Task CreateVehicleMakeAsync(VehicleMake vehicleMake);
-    Task UpdateVehicleMakeAsync(VehicleMake vehicleMake);
+    Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int id);
+    Task CreateVehicleMakeAsync(VehicleMakeViewModel vehicleMake);
+    Task UpdateVehicleMakeAsync(VehicleMakeViewModel vehicleMake);
     Task DeleteVehicleMakeAsync(int id);
     Task<bool> VehicleMakeExistsAsync(int id);
 }

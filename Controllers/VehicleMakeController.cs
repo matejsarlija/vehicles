@@ -74,7 +74,7 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMakeViewModel vehicleMake)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMakeViewModel vehicleMake)
         {
             if (id != vehicleMake.Id)
             {

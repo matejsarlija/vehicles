@@ -1,4 +1,4 @@
-@model Vehicles.Models.VehicleMake
+@model Vehicles.Models.VehicleMakeViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -27,7 +27,7 @@
     
     
     @{
-        var modelsTableVisible = Model.VehicleModels.Count > 0;
+        var modelsTableVisible = Model.VehicleModels.Count() > 0;
     }
     <table class="table" is-visible="modelsTableVisible">
         <thead>
