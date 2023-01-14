@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
@@ -7,13 +8,15 @@ namespace Vehicles.Service;
 public class VehicleMakeRepository : IVehicleMakeRepository
 {
     private readonly VehicleContext _context;
+    private readonly IMapper _mapper;
 
     public VehicleMakeRepository(VehicleContext context)
     {
         _context = context;
+        _mapper = _mapper;
     }
     
-    public async Task<PaginatedList<VehicleMake>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+    public async Task<PaginatedList<VehicleMakeViewModel>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
     {
         if (searchString != null)
         {
@@ -24,7 +27,7 @@ public class VehicleMakeRepository : IVehicleMakeRepository
             searchString = currentFilter;
         }
 
-        var vehicleMakes = from v in _context.VehicleMake select v;
+        var vehicleMakes = from v in _context.VehicleMake select _mapper.Map<VehicleMakeViewModel>(v);
 
         if (!String.IsNullOrEmpty(searchString))
         {
@@ -50,7 +53,7 @@ public class VehicleMakeRepository : IVehicleMakeRepository
 
         int pageSize = 3;
 
-        return await PaginatedList<VehicleMake>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize);
+        return await PaginatedList<VehicleMakeViewModel>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize);
     }
 
     public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)

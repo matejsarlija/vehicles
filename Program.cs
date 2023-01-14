@@ -3,12 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
+using Vehicles.Models;
 using Vehicles.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<VehicleContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("VehicleContext") ?? throw new InvalidOperationException("Connection string 'VehicleContext' not found.")));
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(VehicleMakeProfile));
 builder.Services.AddTransient<IVehicleMakeRepository, VehicleMakeRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
