@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
@@ -10,10 +11,10 @@ public class VehicleMakeRepository : IVehicleMakeRepository
     private readonly VehicleContext _context;
     private readonly IMapper _mapper;
 
-    public VehicleMakeRepository(VehicleContext context)
+    public VehicleMakeRepository(VehicleContext context, IMapper mapper)
     {
         _context = context;
-        _mapper = _mapper;
+        _mapper = mapper;
     }
     
     public async Task<PaginatedList<VehicleMakeViewModel>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -27,14 +28,14 @@ public class VehicleMakeRepository : IVehicleMakeRepository
             searchString = currentFilter;
         }
 
-        var vehicleMakes = from v in _context.VehicleMake select _mapper.Map<VehicleMakeViewModel>(v);
+        var vehicleMakes = _context.VehicleMake.AsQueryable();
 
         if (!String.IsNullOrEmpty(searchString))
         {
             vehicleMakes = vehicleMakes.Where(v => v.Name.Contains(searchString) ||
                                                    v.Abrv.Contains(searchString));
         }
-
+        
         switch (sortOrder)
         {
             case "name_desc":
@@ -52,8 +53,16 @@ public class VehicleMakeRepository : IVehicleMakeRepository
         }
 
         int pageSize = 3;
+        var totalCount = await vehicleMakes.CountAsync();
 
-        return await PaginatedList<VehicleMakeViewModel>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize);
+        if (!pageNumber.HasValue)
+        {
+            pageNumber = 1;
+        }
+        var vehicleMakeItems = await vehicleMakes.Skip((pageNumber.Value - 1) * pageSize).Take(pageSize).ToListAsync();
+        var vehicleMakeItemsVM = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakeItems);
+        return new PaginatedList<VehicleMakeViewModel>(vehicleMakeItemsVM, totalCount, pageNumber.Value,
+            pageSize);
     }
 
     public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)
