@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
+using Vehicles.Service;
 
 namespace Vehicles.Controllers
 {
     public class VehicleMakeController : Controller
     {
+        private readonly IVehicleMakeRepository _vehicleMakeRepository;
         private readonly VehicleContext _context;
 
-        public VehicleMakeController(VehicleContext context)
+        public VehicleMakeController(VehicleContext context, IVehicleMakeRepository vehicleMakeRepository)
         {
+            _vehicleMakeRepository = vehicleMakeRepository;
             _context = context;
         }
 
@@ -37,33 +40,10 @@ namespace Vehicles.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var vehicleMakes = from v in _context.VehicleMake select v;
+            var vehicleMakes =
+                await _vehicleMakeRepository.GetVehicleMakesAsync(sortOrder, currentFilter, searchString, pageNumber);
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                vehicleMakes = vehicleMakes.Where(v => v.Name.Contains(searchString) ||
-                                                       v.Abrv.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    vehicleMakes = vehicleMakes.OrderByDescending(v => v.Name);
-                    break;
-                case "abrv":
-                    vehicleMakes = vehicleMakes.OrderBy(v => v.Abrv);
-                    break;
-                case "abrv_desc":
-                    vehicleMakes = vehicleMakes.OrderByDescending(v => v.Abrv);
-                    break;
-                default:
-                    vehicleMakes = vehicleMakes.OrderBy(v => v.Name);
-                    break;
-            }
-
-            int pageSize = 3;
-
-            return View(await PaginatedList<VehicleMake>.CreateAsync(vehicleMakes.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(vehicleMakes);
         }
 
         // GET: VehicleMake/Details/5
