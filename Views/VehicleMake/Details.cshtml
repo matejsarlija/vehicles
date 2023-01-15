@@ -27,7 +27,7 @@
     
     
     @{
-        var modelsTableVisible = Model.VehicleModels.Count() > 0;
+        var modelsTableVisible = Model.VehicleModels.Any();
     }
     <table class="table" is-visible="modelsTableVisible">
         <thead>
