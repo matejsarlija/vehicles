@@ -49,16 +49,8 @@ public class VehicleMakeRepository : IVehicleMakeRepository
         }
 
         int pageSize = 3;
-        var totalCount = await vehicleMakes.CountAsync();
-
-        if (!pageNumber.HasValue)
-        {
-            pageNumber = 1;
-        }
-        var vehicleMakeItems = await vehicleMakes.Skip((pageNumber.Value - 1) * pageSize).Take(pageSize).ToListAsync();
-        //var vehicleMakeItemsVM = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakeItems);
-        return new PaginatedList<VehicleMake>(vehicleMakeItems, totalCount, pageNumber.Value,
-            pageSize);
+        
+        return await PaginatedList<VehicleMake>.CreateAsync(vehicleMakes, pageNumber ?? 1, pageSize);
     }
 
     public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)

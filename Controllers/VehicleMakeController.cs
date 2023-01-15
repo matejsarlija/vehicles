@@ -45,9 +45,11 @@ namespace Vehicles.Controllers
             var vehicleMakes =
                 await _vehicleMakeRepository.GetVehicleMakesAsync(sortOrder, currentFilter, searchString, pageNumber);
 
-            var vehicleMakesVm = _mapper.Map<PaginatedList<VehicleMakeViewModel>>(vehicleMakes);
+            var vehicleMakesVm = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
 
-            return View(vehicleMakesVm);
+            var paginatedVehicleMakesVm = new PaginatedList<VehicleMakeViewModel>(vehicleMakesVm, vehicleMakes.Count(), pageNumber ?? 1, 3);
+
+            return View(paginatedVehicleMakesVm);
         }
 
         // GET: VehicleMake/Details/5
