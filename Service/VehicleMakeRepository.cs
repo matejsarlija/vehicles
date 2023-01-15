@@ -1,5 +1,3 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
@@ -9,15 +7,13 @@ namespace Vehicles.Service;
 public class VehicleMakeRepository : IVehicleMakeRepository
 {
     private readonly VehicleContext _context;
-    private readonly IMapper _mapper;
 
-    public VehicleMakeRepository(VehicleContext context, IMapper mapper)
+    public VehicleMakeRepository(VehicleContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
     
-    public async Task<PaginatedList<VehicleMakeViewModel>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+    public async Task<PaginatedList<VehicleMake>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
     {
         if (searchString != null)
         {
@@ -60,28 +56,26 @@ public class VehicleMakeRepository : IVehicleMakeRepository
             pageNumber = 1;
         }
         var vehicleMakeItems = await vehicleMakes.Skip((pageNumber.Value - 1) * pageSize).Take(pageSize).ToListAsync();
-        var vehicleMakeItemsVM = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakeItems);
-        return new PaginatedList<VehicleMakeViewModel>(vehicleMakeItemsVM, totalCount, pageNumber.Value,
+        //var vehicleMakeItemsVM = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakeItems);
+        return new PaginatedList<VehicleMake>(vehicleMakeItems, totalCount, pageNumber.Value,
             pageSize);
     }
 
-    public async Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int id)
+    public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)
     {
         var vehicleMake = await _context.VehicleMake.Include(v => v.VehicleModels)
             .FirstOrDefaultAsync(m => m.Id == id);
-        return _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+        return vehicleMake;
     }
 
-    public async Task CreateVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
+    public async Task CreateVehicleMakeAsync(VehicleMake vehicleMake)
     {
-        var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
         _context.VehicleMake.Add(vehicleMake);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
+    public async Task UpdateVehicleMakeAsync(VehicleMake vehicleMake)
     {
-        var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
         _context.VehicleMake.Update(vehicleMake);
         await _context.SaveChangesAsync();
     }

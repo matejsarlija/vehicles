@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,13 @@ namespace Vehicles.Controllers
     public class VehicleMakeController : Controller
     {
         private readonly IVehicleMakeRepository _vehicleMakeRepository;
-        private readonly VehicleContext _context;
+        private readonly IMapper _mapper;
 
-        public VehicleMakeController(VehicleContext context, IVehicleMakeRepository vehicleMakeRepository)
+
+        public VehicleMakeController(IVehicleMakeRepository vehicleMakeRepository, IMapper mapper)
         {
             _vehicleMakeRepository = vehicleMakeRepository;
-            _context = context;
+            _mapper = mapper;
         }
 
         // GET: VehicleMake
@@ -43,7 +45,9 @@ namespace Vehicles.Controllers
             var vehicleMakes =
                 await _vehicleMakeRepository.GetVehicleMakesAsync(sortOrder, currentFilter, searchString, pageNumber);
 
-            return View(vehicleMakes);
+            var vehicleMakesVm = _mapper.Map<PaginatedList<VehicleMakeViewModel>>(vehicleMakes);
+
+            return View(vehicleMakesVm);
         }
 
         // GET: VehicleMake/Details/5
@@ -60,7 +64,9 @@ namespace Vehicles.Controllers
                 return NotFound();
             }
 
-            return View(vehicleMake);
+            var vehicleMakeVm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+
+            return View(vehicleMakeVm);
         }
 
         // GET: VehicleMake/Create
@@ -74,14 +80,16 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMakeViewModel vehicleMake)
+        public async Task<IActionResult> Create([Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
         {
             if (ModelState.IsValid)
             {
                 await _vehicleMakeRepository.CreateVehicleMakeAsync(vehicleMake);
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleMake);
+
+            var vehicleMakeVm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+            return View(vehicleMakeVm);
         }
 
         // GET: VehicleMake/Edit/5
@@ -97,7 +105,9 @@ namespace Vehicles.Controllers
             {
                 return NotFound();
             }
-            return View(vehicleMake);
+
+            var vehicleMakeVm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+            return View(vehicleMakeVm);
         }
 
         // POST: VehicleMake/Edit/5
@@ -105,7 +115,7 @@ namespace Vehicles.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMakeViewModel vehicleMake)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Abrv")] VehicleMake vehicleMake)
         {
             if (id != vehicleMake.Id)
             {
@@ -131,7 +141,9 @@ namespace Vehicles.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleMake);
+
+            var vehicleMakeVm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+            return View(vehicleMakeVm);
         }
 
         // GET: VehicleMake/Delete/5
@@ -144,7 +156,9 @@ namespace Vehicles.Controllers
                 return NotFound();
             }
 
-            return View(vehicleMake);
+            var vehicleMakeVm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
+
+            return View(vehicleMakeVm);
         }
 
         // POST: VehicleMake/Delete/5
