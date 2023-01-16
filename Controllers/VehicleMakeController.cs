@@ -47,7 +47,7 @@ namespace Vehicles.Controllers
 
             var vehicleMakesVm = _mapper.Map<List<VehicleMakeViewModel>>(vehicleMakes);
 
-            var paginatedVehicleMakesVm = new PaginatedList<VehicleMakeViewModel>(vehicleMakesVm, vehicleMakes.Count(), pageNumber ?? 1, 3);
+            var paginatedVehicleMakesVm = new PaginatedList<VehicleMakeViewModel>(vehicleMakesVm, vehicleMakes.TotalCount, pageNumber ?? 1, 3);
 
             return View(paginatedVehicleMakesVm);
         }
