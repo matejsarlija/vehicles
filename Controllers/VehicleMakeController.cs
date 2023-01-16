@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
 using Vehicles.Service;
@@ -126,21 +125,12 @@ namespace Vehicles.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                if (! await _vehicleMakeRepository.VehicleMakeExistsAsync(vehicleMake.Id))
                 {
-                    await _vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (! await _vehicleMakeRepository.VehicleMakeExistsAsync(vehicleMake.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                await _vehicleMakeRepository.UpdateVehicleMakeAsync(vehicleMake);
                 return RedirectToAction(nameof(Index));
             }
 
