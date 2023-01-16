@@ -1,22 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Vehicles.Data;
 using Vehicles.Models;
+using Vehicles.Service;
 
 namespace Vehicles.Controllers
 {
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
+        private readonly IVehicleModelRepository _vehicleModelRepository;
 
-        public VehicleModelController(VehicleContext context)
+
+        public VehicleModelController(IVehicleModelRepository vehicleModelRepository, VehicleContext context)
         {
             _context = context;
+            _vehicleModelRepository = vehicleModelRepository;
         }
 
         // GET: VehicleModel
@@ -78,7 +78,7 @@ namespace Vehicles.Controllers
                 PaginatedList<VehicleModel>.CreateAsync(source, pageNumber ?? 1, pageSize);
 
 
-            var vehicleModelVM = new VehicleModelViewModel
+            var vehicleModelVm = new VehicleModelViewModel
             {
                 VehicleMakes = new SelectList(await vehicleMakeQuery.Distinct().ToListAsync()),
                 VehicleModels = paginatedList,
@@ -86,7 +86,7 @@ namespace Vehicles.Controllers
                 SearchString = currentFilter
             };
             
-            return View(vehicleModelVM);
+            return View(vehicleModelVm);
         }
 
         // GET: VehicleModel/Details/5

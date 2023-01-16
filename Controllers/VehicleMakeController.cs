@@ -162,11 +162,5 @@ namespace Vehicles.Controllers
             return RedirectToAction(nameof(Index));
         }
         
-        
-        // marked for deletion
-        //private bool VehicleMakeExists(int id)
-        //{
-        //  return (_context.VehicleMake?.Any(e => e.Id == id)).GetValueOrDefault();
-        //}
     }
 }
