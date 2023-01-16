@@ -10,13 +10,13 @@ namespace Vehicles.Controllers
     public class VehicleModelController : Controller
     {
         private readonly VehicleContext _context;
-        private readonly IVehicleModelRepository _vehicleModelRepository;
+        private readonly IVehicleMakeRepository _vehicleMakeRepository;
 
 
-        public VehicleModelController(IVehicleModelRepository vehicleModelRepository, VehicleContext context)
+        public VehicleModelController(IVehicleMakeRepository vehicleMakeRepository, VehicleContext context)
         {
             _context = context;
-            _vehicleModelRepository = vehicleModelRepository;
+            _vehicleMakeRepository = vehicleMakeRepository;
         }
 
         // GET: VehicleModel
@@ -39,9 +39,7 @@ namespace Vehicles.Controllers
             ViewData["CurrentFilter"] = vehicleModelMake; 
             
             // section for filter by make
-            IQueryable<string> vehicleMakeQuery = from v in _context.VehicleModel.Include(v => v.VehicleMake)
-                orderby v.VehicleMake
-                select v.VehicleMake.Name;
+            var vehicleMakeQuery = await _vehicleMakeRepository.GetVehicleMakesForModelsAsync();
 
             var vehicleModels = from v in _context.VehicleModel.Include(v => v.VehicleMake) select v;
 
@@ -80,7 +78,7 @@ namespace Vehicles.Controllers
 
             var vehicleModelVm = new VehicleModelViewModel
             {
-                VehicleMakes = new SelectList(await vehicleMakeQuery.Distinct().ToListAsync()),
+                VehicleMakes = new SelectList(vehicleMakeQuery.Select(vM => vM.Name)),
                 VehicleModels = paginatedList,
                 VehicleModelMake = vehicleModelMake,
                 SearchString = currentFilter

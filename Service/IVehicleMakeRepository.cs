@@ -4,6 +4,7 @@ namespace Vehicles.Service;
 
 public interface IVehicleMakeRepository
 {
+    Task<List<VehicleMake>> GetVehicleMakesForModelsAsync();
     Task<PaginatedList<VehicleMake>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber);
     Task<VehicleMake> GetVehicleMakeByIdAsync(int id);
     Task CreateVehicleMakeAsync(VehicleMake vehicleMake);

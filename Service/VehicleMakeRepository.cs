@@ -13,6 +13,11 @@ public class VehicleMakeRepository : IVehicleMakeRepository
         _context = context;
     }
     
+    public async Task<List<VehicleMake>> GetVehicleMakesForModelsAsync()
+    {
+        return await _context.VehicleMake.ToListAsync();
+    }
+    
     public async Task<PaginatedList<VehicleMake>> GetVehicleMakesAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
     {
         if (searchString != null)
